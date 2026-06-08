@@ -1,0 +1,5 @@
+ScreenAutoSolver.exe
+*.exe
+dist/
+build/
+*.spec

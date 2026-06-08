@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ScreenAutoSolver 测试题页</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      background: #f4f6f8;
+      color: #1f2933;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 36px 20px;
+    }
+
+    main {
+      width: min(980px, 100%);
+      background: #ffffff;
+      border: 1px solid #d6dde6;
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(31, 41, 51, 0.08);
+      padding: 28px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e4e9ef;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .counter {
+      font-size: 18px;
+      color: #52616f;
+    }
+
+    .question-area {
+      min-height: 170px;
+      padding: 18px 0 10px;
+    }
+
+    .question-type {
+      font-size: 16px;
+      color: #006d77;
+      margin-bottom: 12px;
+    }
+
+    .question-text {
+      font-size: 26px;
+      line-height: 1.55;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .options-area {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      min-height: 280px;
+    }
+
+    .option {
+      width: 100%;
+      min-height: 58px;
+      padding: 13px 18px;
+      border: 2px solid #c8d2dc;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #1f2933;
+      font-size: 22px;
+      line-height: 1.35;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      border-color: #6a8caf;
+      background: #f7fafc;
+    }
+
+    .option.selected {
+      border-color: #0f766e;
+      background: #dff7f3;
+      box-shadow: inset 0 0 0 2px rgba(15, 118, 110, 0.16);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e4e9ef;
+      padding-top: 20px;
+      margin-top: 24px;
+    }
+
+    .status {
+      font-size: 17px;
+      color: #52616f;
+    }
+
+    .next-button {
+      width: 180px;
+      height: 58px;
+      border: 0;
+      border-radius: 8px;
+      background: #1f6feb;
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .next-button:disabled {
+      background: #9aa7b3;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>自有练习测试页</h1>
+      <div class="counter" id="counter"></div>
+    </header>
+
+    <section class="question-area" id="questionArea">
+      <div class="question-type" id="questionType"></div>
+      <p class="question-text" id="questionText"></p>
+    </section>
+
+    <section class="options-area" id="optionsArea"></section>
+
+    <footer>
+      <div class="status" id="status">请选择一个选项</div>
+      <button class="next-button" id="nextButton" type="button">下一题</button>
+    </footer>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        type: "单选题",
+        text: "Python 中用于定义函数的关键字是？",
+        options: ["A. def", "B. class", "C. import", "D. return"],
+        answer: "A"
+      },
+      {
+        type: "判断题",
+        text: "HTML 是一种用于描述网页结构的标记语言。",
+        options: ["A. 正确", "B. 错误"],
+        answer: "A"
+      },
+      {
+        type: "单选题",
+        text: "在 CSS 中，设置文字颜色常用的属性是？",
+        options: ["A. font-size", "B. color", "C. margin", "D. display"],
+        answer: "B"
+      },
+      {
+        type: "判断题",
+        text: "JavaScript 只能在服务器端运行，不能在浏览器中运行。",
+        options: ["A. 正确", "B. 错误"],
+        answer: "B"
+      },
+      {
+        type: "单选题",
+        text: "HTTP 状态码 404 通常表示什么？",
+        options: ["A. 请求成功", "B. 未找到资源", "C. 服务器重启", "D. 权限通过"],
+        answer: "B"
+      },
+      {
+        type: "单选题",
+        text: "下列哪个是 Python 的列表类型示例？",
+        options: ["A. {1, 2, 3}", "B. (1, 2, 3)", "C. [1, 2, 3]", "D. \"1, 2, 3\""],
+        answer: "C"
+      },
+      {
+        type: "判断题",
+        text: "浏览器地址栏输入 file 路径也可以打开本地 HTML 文件。",
+        options: ["A. 正确", "B. 错误"],
+        answer: "A"
+      },
+      {
+        type: "单选题",
+        text: "JSON 中表示布尔真值的写法是？",
+        options: ["A. True", "B. TRUE", "C. true", "D. yes"],
+        answer: "C"
+      },
+      {
+        type: "判断题",
+        text: "屏幕识别自动化需要稳定的窗口位置和页面缩放比例。",
+        options: ["A. 正确", "B. 错误"],
+        answer: "A"
+      },
+      {
+        type: "单选题",
+        text: "运行 ScreenAutoSolver 前，最推荐先执行哪种测试？",
+        options: ["A. 直接连续点击", "B. 单题干跑", "C. 关闭日志", "D. 随机移动窗口"],
+        answer: "B"
+      }
+    ];
+
+    let index = 0;
+    const selected = new Array(questions.length).fill(null);
+
+    const counter = document.getElementById("counter");
+    const questionType = document.getElementById("questionType");
+    const questionText = document.getElementById("questionText");
+    const optionsArea = document.getElementById("optionsArea");
+    const status = document.getElementById("status");
+    const nextButton = document.getElementById("nextButton");
+
+    function render() {
+      const current = questions[index];
+      counter.textContent = `第 ${index + 1} / ${questions.length} 题`;
+      questionType.textContent = current.type;
+      questionText.textContent = current.text;
+      optionsArea.innerHTML = "";
+
+      current.options.forEach((optionText) => {
+        const label = optionText.trim().slice(0, 1).toUpperCase();
+        const button = document.createElement("button");
+        button.className = "option";
+        button.type = "button";
+        button.textContent = optionText;
+        if (selected[index] === label) {
+          button.classList.add("selected");
+        }
+        button.addEventListener("click", () => {
+          selected[index] = label;
+          status.textContent = `已选择 ${label}`;
+          render();
+        });
+        optionsArea.appendChild(button);
+      });
+
+      if (index === questions.length - 1) {
+        nextButton.textContent = "完成";
+      } else {
+        nextButton.textContent = "下一题";
+      }
+      status.textContent = selected[index] ? `已选择 ${selected[index]}` : "请选择一个选项";
+    }
+
+    nextButton.addEventListener("click", () => {
+      if (index >= questions.length - 1) {
+        nextButton.disabled = true;
+        status.textContent = "练习已完成";
+        return;
+      }
+      index += 1;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

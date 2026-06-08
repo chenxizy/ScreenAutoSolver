@@ -1,0 +1,49 @@
+api:
+  url: "https://example.com/answer"
+  api_key: ""
+  api_key_header: "Authorization"
+  api_key_prefix: "Bearer "
+  model: "glm-5.1"
+  temperature: 0.1
+  timeout_seconds: 30
+  click_point_space: "auto"
+
+regions:
+  question:
+    x: 100
+    y: 100
+    width: 900
+    height: 420
+  options:
+    x: 120
+    y: 320
+    width: 860
+    height: 260
+  next_button:
+    x: 820
+    y: 700
+    width: 160
+    height: 60
+
+ocr:
+  engine: "rapidocr"
+  text_match_threshold: 0.62
+  min_line_confidence: 0.0
+
+runtime:
+  log_dir: "runs"
+  max_questions: 100
+  click_delay_seconds: 0.8
+  next_delay_seconds: 1.2
+  require_manual_confirm: false
+  dry_run: false
+  strict_triple_check: true
+  non_strict_use_confidence_margin: false
+  non_strict_confidence_margin: 0.15
+  cache_next_button_after_first_detection: false
+  auto_minimize_on_run: true
+  selection_diff_threshold: 3.0
+  unchanged_question_threshold: 2.0
+  stop_if_question_unchanged: true
+  next_keywords: ["下一题", "下一步", "Next", "next"]
+  stop_keywords: ["完成", "提交", "结束", "Finish", "Submit"]
