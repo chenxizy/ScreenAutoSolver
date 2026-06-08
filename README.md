@@ -17,7 +17,6 @@ ScreenAutoSolver 是一个用于自有练习或已授权练习环境的桌面工
 
 ```text
 ScreenAutoSolver.exe
-config.yaml
 config.example.yaml
 ```
 
@@ -42,35 +41,6 @@ config.example.yaml
 - `下一题按钮固定：只识别一次`：第一题识别到“下一题”后缓存按钮状态，后续不再 OCR 下一题按钮，直接点击已校准按钮区域中心。
 - `严格三重校验`：开启时，答案字母、答案文本、点击坐标必须指向同一选项；关闭时会按候选置信度选择。
 - `非严格时启用差异阈值`：仅在关闭严格三重校验时生效；若第一名和第二名分差不够，会暂停让你人工确认。
-
-## EXE 冒烟测试
-
-可用下面命令检查 exe 内部是否能完成前端初始化、配置读取、截图、OCR 初始化和日志保存：
-
-```powershell
-.\ScreenAutoSolver.exe --smoke-test --smoke-dir exe_smoke
-```
-
-成功时会生成：
-
-```text
-exe_smoke\smoke_result.json
-exe_smoke\smoke_screenshot.png
-exe_smoke\runs\...\smoke_log.json
-```
-
-`smoke_result.json` 中应包含：
-
-```json
-{
-  "gui_opened": true,
-  "config_loaded": true,
-  "screenshot_saved": true,
-  "ocr_initialized": true,
-  "log_saved": true,
-  "status": "ok"
-}
-```
 
 ## 前端功能说明
 
@@ -237,14 +207,6 @@ runs\YYYYMMDD_HHMMSS\attempt_0001\
 
 ## 从源码运行
 
-安装依赖：
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -e ".[screen,ocr]"
-```
-
 启动前端：
 
 ```powershell
@@ -267,59 +229,6 @@ python -m auto_solver run --config config.yaml --once --dry-run
 
 ```powershell
 python -m auto_solver run --config config.yaml
-```
-
-## 重新打包 EXE
-
-如果依赖已经安装：
-
-```powershell
-.\build_exe.ps1
-```
-
-如果需要自动安装依赖再打包：
-
-```powershell
-.\build_exe.ps1 -InstallDeps
-```
-
-打包脚本会把以下资源收进 exe：
-
-- `rapidocr_onnxruntime`
-- `onnxruntime`
-- `mss`
-- `pyautogui`
-- `cv2`
-- `yaml`
-- `Pillow`
-- `config.example.yaml`
-
-生成文件：
-
-```text
-dist\ScreenAutoSolver.exe
-```
-
-当前整理后的根目录已经放了一份可直接运行的 `ScreenAutoSolver.exe`。重新打包后，如需继续保持根目录便携布局，可以把 `dist\ScreenAutoSolver.exe` 复制回根目录。
-
-## 测试
-
-运行单元测试：
-
-```powershell
-python -m unittest discover -s tests
-```
-
-运行源码 smoke test：
-
-```powershell
-python -m auto_solver.gui_entry --smoke-test --smoke-dir py_smoke
-```
-
-运行 exe smoke test：
-
-```powershell
-.\ScreenAutoSolver.exe --smoke-test --smoke-dir exe_smoke
 ```
 
 ## 常见问题
